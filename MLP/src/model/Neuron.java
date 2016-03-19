@@ -4,14 +4,37 @@ package model;
 public class Neuron
 {
 	// members
-	private int value;
-
+	private double input;
+	private double output;
+	private int id;
+	
+	public Neuron(int id)
+	{
+		this.setId(id);
+	}
+	
 	// getters and setters
-	public int getValue() {
-		return value;
+	public double getInput() {
+		return input;
 	}
 
-	public void setValue(int value) {
-		this.value = value;
+	public void setInput(double value) {
+		this.input = value;
+	}
+
+	public double getOutput() {
+		return output;
+	}
+
+	public void setOutput(double output) {
+		this.output = output;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

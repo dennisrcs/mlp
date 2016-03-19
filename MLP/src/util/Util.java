@@ -6,6 +6,8 @@ import java.util.Random;
 
 public class Util
 {
+	private static Random random = new Random(System.currentTimeMillis());
+	
 	// shuffle the data but keeps the first titles in order
 	public static void Shuffle(List<String> data)
 	{
@@ -15,5 +17,11 @@ public class Util
 		Collections.shuffle(data, new Random(seed));
 		data.add(0, secondLine);
 		data.add(0, firstLine);
+	}
+
+	// generates a random weight
+	public static double GenerateRandomWeight()
+	{
+		return -0.05 + (random.nextDouble() * 0.1);
 	}
 }
