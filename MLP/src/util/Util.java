@@ -4,8 +4,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+// utilities class
 public class Util
 {
+	// static random number generator
 	private static Random random = new Random(System.currentTimeMillis());
 	
 	// shuffle the data but keeps the first titles in order

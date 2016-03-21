@@ -1,16 +1,28 @@
 package model;
 
+import util.MathFunctions;
+
 // represents the neuron of the neural network
 public class Neuron
 {
 	// members
 	private double input;
 	private double output;
+	private boolean isBias;
 	private int id;
 	
-	public Neuron(int id)
+	// constructor
+	public Neuron(int id, boolean isBias)
 	{
 		this.setId(id);
+		this.setBias(isBias);
+	}
+	
+	public double calculateOutput(double input)
+	{
+		this.input = input;
+		this.output = MathFunctions.sigmoidFunction(this.input);
+		return this.output;
 	}
 	
 	// getters and setters
@@ -19,7 +31,7 @@ public class Neuron
 	}
 
 	public void setInput(double value) {
-		this.input = value;
+		if (!isBias) this.input = value;
 	}
 
 	public double getOutput() {
@@ -36,5 +48,14 @@ public class Neuron
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public boolean isBias() {
+		return isBias;
+	}
+
+	public void setBias(boolean isBias) {
+		this.isBias = isBias;
+		this.setOutput(1.0);
 	}
 }

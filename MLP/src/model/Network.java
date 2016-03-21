@@ -11,50 +11,60 @@ public class Network
 	// members
 	private List<List<Neuron>> neurons;
 	private List<List<List<Weight>>> weights;
+	private Configuration configuration;
 
 	// constructor
 	public Network(Configuration config)
 	{
-		this.neurons = new ArrayList<List<Neuron>>();
-		this.weights = new ArrayList<List<List<Weight>>>();
-		
-		initializeNeurons(config);
-		initializeWeights(config);
+		this.setNeurons(new ArrayList<List<Neuron>>());
+		this.setWeights(new ArrayList<List<List<Weight>>>());
+		this.setConfiguration(config);
+	}
+	
+	// create neurons and initialize weights
+	public void initialize()
+	{
+		initializeNeurons();
+		initializeWeights();		
 	}
 
 	// initialize the network neurons according to config
-	private void initializeNeurons(Configuration config)
+	private void initializeNeurons()
 	{
 		int neuronId = 0;
+		int layerNum = getConfiguration().getLayersNumber();
 		
-		for (int i = 1; i < config.getLayersNumber(); i++)
+		for (int i = 0; i < layerNum; i++)
 		{
-			int numNeurons = config.getNodesPerLayer().get(i);
+			int numNeurons = getConfiguration().getNodesPerLayer().get(i);
 			ArrayList<Neuron> layer = new ArrayList<Neuron>();
+			
+			// every layer but the last has bias
+			numNeurons = (i - 1 == layerNum) ? numNeurons : (numNeurons+1);
 			
 			for (int j = 0; j < numNeurons; j++)
 			{
-				Neuron neuron = new Neuron(neuronId++);
+				Neuron neuron = new Neuron(neuronId++, j == 0);
 				layer.add(neuron);
 			}
 			
 			// adds new layer to set of neurons
-			this.neurons.add(layer);
+			this.getNeurons().add(layer);
 		}
 	}
 	
 	// initialize the weights of the network
-	private void initializeWeights(Configuration config)
+	private void initializeWeights()
 	{
-		for (int i = 0; i < config.getLayersNumber() - 1; i++)
+		for (int i = 0; i < getConfiguration().getLayersNumber() - 1; i++)
 		{
-			int previousLayerSize = config.getNodesPerLayer().get(i);
+			int previousLayerSize = getConfiguration().getNodesPerLayer().get(i);
 			List<List<Weight>> layerWeights = new ArrayList<List<Weight>>();
 
 			// +1 for bias
 			for (int j = 0; j < previousLayerSize + 1; j++)
 			{
-				int nextLayerSize = config.getNodesPerLayer().get(i+1);
+				int nextLayerSize = getConfiguration().getNodesPerLayer().get(i+1);
 				List<Weight> weightsAux = new ArrayList<Weight>();
 				
 				for (int k = 0; k < nextLayerSize; k++)
@@ -64,7 +74,7 @@ public class Network
 			}
 			
 			// adds weights connecting layers to the set of weights
-			this.weights.add(layerWeights);
+			this.getWeights().add(layerWeights);
 		}
 	}
 
@@ -78,25 +88,49 @@ public class Network
 
 	public void printNeurons()
 	{
-		for (int i = 0; i < neurons.size(); i++)
+		for (int i = 0; i < getNeurons().size(); i++)
 		{
 			System.out.println("Layer " + (i+1) + ":");
-			for (int j = 0; j < neurons.get(i).size(); j++)
-				System.out.print(neurons.get(i).get(j).getId() + ", ");
+			for (int j = 0; j < getNeurons().get(i).size(); j++)
+				System.out.print(getNeurons().get(i).get(j).getId() + ", ");
 			System.out.println();
 		}
 	}
 	
 	public void printWeights()
 	{
-		for (int i = 0; i < weights.size(); i++)
+		for (int i = 0; i < getWeights().size(); i++)
 		{
 			System.out.println("Weights Layers: " + i + "->" + (i+1));
 
-			for (int j = 0; j < weights.get(i).size(); j++)
-				for (int k = 0; k < weights.get(i).get(j).size(); k++)
-					System.out.println("Weight " + j + "," + k + ": " + weights.get(i).get(j).get(k).getValue());
+			for (int j = 0; j < getWeights().get(i).size(); j++)
+				for (int k = 0; k < getWeights().get(i).get(j).size(); k++)
+					System.out.println("Weight " + j + "," + k + ": " + getWeights().get(i).get(j).get(k).getValue());
 		}
+	}
+
+	public List<List<Neuron>> getNeurons() {
+		return neurons;
+	}
+
+	public void setNeurons(List<List<Neuron>> neurons) {
+		this.neurons = neurons;
+	}
+
+	public List<List<List<Weight>>> getWeights() {
+		return weights;
+	}
+
+	public void setWeights(List<List<List<Weight>>> weights) {
+		this.weights = weights;
+	}
+
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
 	}
 
 }
