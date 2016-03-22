@@ -24,7 +24,7 @@ public class FeedForwarder
 	}
 	
 	// feed the net forward and calculate its output
-	public static List<Double> feed(Network net, Example example)
+	public static List<Double> execute(Network net, Example example)
 	{
 		// variables
 		int currLayerSize;

@@ -8,6 +8,7 @@ public class Neuron
 	// members
 	private double input;
 	private double output;
+	private double error;
 	private boolean isBias;
 	private int id;
 	
@@ -57,5 +58,13 @@ public class Neuron
 	public void setBias(boolean isBias) {
 		this.isBias = isBias;
 		this.setOutput(1.0);
+	}
+
+	public double getError() {
+		return error;
+	}
+
+	public void setError(double error) {
+		this.error = error;
 	}
 }
