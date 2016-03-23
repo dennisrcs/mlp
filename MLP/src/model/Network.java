@@ -6,7 +6,7 @@ import java.util.List;
 import util.Util;
 
 // stores the neurons and set of weights linking neurons
-public class Network
+public class Network implements Cloneable
 {
 	// members
 	private List<List<Neuron>> neurons;
@@ -26,6 +26,38 @@ public class Network
 	{
 		initializeNeurons();
 		initializeWeights();		
+	}
+	
+	// clones the current network configuration
+	public Object clone()
+	{
+		Network newNet = new Network(this.configuration);
+		
+		List<List<Neuron>> neurons = newNet.getNeurons();
+		List<List<List<Weight>>> weights = newNet.getWeights();
+		
+		for (int i = 0; i < this.neurons.size(); i++)
+		{
+			List<Neuron> layer = new ArrayList<Neuron>();
+			for (int j = 0; j < this.neurons.get(i).size(); j++)
+				layer.add((Neuron)this.neurons.get(i).get(j).clone());
+			neurons.add(layer);
+		}
+		
+		for (int i = 0; i < this.weights.size(); i++)
+		{
+			List<List<Weight>> weightsBetweenLayers = new ArrayList<List<Weight>>();
+			for (int j = 0; j < this.weights.get(i).size(); j++)
+			{
+				List<Weight> weightsBetweenNeurons = new ArrayList<Weight>();
+				for (int k = 0; k < this.weights.get(i).get(j).size(); k++)
+					weightsBetweenNeurons.add((Weight)this.weights.get(i).get(j).get(k).clone());
+				weightsBetweenLayers.add(weightsBetweenNeurons);
+			}
+			weights.add(weightsBetweenLayers);
+		}
+		
+		return newNet;
 	}
 
 	// initialize the network neurons according to config
@@ -90,7 +122,8 @@ public class Network
 		Weight weight = new Weight(value);
 		weights.add(weight);
 	}
-
+	
+	// prints out the neurons of the network
 	public void printNeurons()
 	{
 		for (int i = 0; i < getNeurons().size(); i++)
@@ -102,6 +135,7 @@ public class Network
 		}
 	}
 	
+	// prints out the weights of the network
 	public void printWeights()
 	{
 		for (int i = 0; i < getWeights().size(); i++)

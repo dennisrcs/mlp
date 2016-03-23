@@ -5,25 +5,32 @@ import java.util.Map;
 
 import model.Configuration;
 import model.Example;
-import parser.DataSplitter;
+import model.Network;
 
 // wraps the main process execution phase
 public class Processor
 {
-	// member
-	private DataSplitter dataSplitter;
-	
-	// constructor
-	public Processor(List<Example> examples)
+	public Network execute(List<Example> trainingData, List<Example> validationData, Map<Integer, Integer> neuronsPerLayer)
 	{
-		this.dataSplitter = new DataSplitter(examples);
-	}
-
-	public void execute(Map<Integer, Integer> neuronsPerLayer)
-	{
-		Configuration config = new Configuration(dataSplitter.getInputSize(), dataSplitter.getOutputSize(), neuronsPerLayer);
+		Configuration config = new Configuration(getInputSize(trainingData), getOutputSize(trainingData), neuronsPerLayer);
 		Trainer trainer = new Trainer(config);
-		trainer.train(dataSplitter.getTrainingData(), dataSplitter.getValidationData());
+		return trainer.train(trainingData, validationData);
+	}
+	
+	private int getInputSize(List<Example> data)
+	{
+		if (data != null && data.size() > 0)
+			return data.get(0).getInputSize();
+		else
+			throw new NullPointerException("Data is either null or empty");
+	}
+	
+	private int getOutputSize(List<Example> data)
+	{
+		if (data != null && data.size() > 0)
+			return data.get(0).getOutputSize();
+		else
+			throw new NullPointerException("Data is either null or empty");
 	}
 
 }

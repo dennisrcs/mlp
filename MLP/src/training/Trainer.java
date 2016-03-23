@@ -18,25 +18,22 @@ public class Trainer
 		this.neural_net = new Network(config);
 	}
 	
-	public void train(List<Example> trainingData, List<Example> validationData)
+	public Network train(List<Example> trainingData, List<Example> validationData)
 	{
 		// initializing neural network
 		this.neural_net.initialize();
 		
-		// training variables
-		List<List<Double>> trainingOutputs;
-		List<List<Double>> trainingTargets;
-		double trainingMSE;
-
+		// initializing stopping criterion
+		StoppingCriterion criterion = new StoppingCriterion();
+		
 		// validation variables
 		List<List<Double>> validationOutputs;
 		List<List<Double>> validationTargets;
 		double validationMSE;
-	
-		for (int i = 0; i < 1000000; i++)
+		int iteration = 0;
+		
+		for (iteration = 0; !criterion.isDone(iteration); iteration++)
 		{
-			trainingOutputs = new ArrayList<List<Double>>();
-			trainingTargets = new ArrayList<List<Double>>();
 			validationOutputs = new ArrayList<List<Double>>();
 			validationTargets = new ArrayList<List<Double>>();
 			
@@ -45,17 +42,10 @@ public class Trainer
 			{
 				FeedForwarder.fromInputToFirstLayer(this.neural_net, ex);
 				List<Double> outputs = FeedForwarder.execute(this.neural_net, ex);
-				
-				trainingOutputs.add(outputs);
-				trainingTargets.add(ex.getTarget());
-				
 				Backpropagator.calculateErrorInOutput(this.neural_net, outputs, ex.getTarget());
 				Backpropagator.calculateErrorInHiddenUnits(this.neural_net);
 				Backpropagator.updateWeights(this.neural_net);
 			}
-			
-			// calculating MSE for the training data
-			trainingMSE = Evaluator.calculateMSE(trainingOutputs, trainingTargets);
 			
 			// computing MSE for validation set
 			for (Example ex : validationData)
@@ -68,10 +58,8 @@ public class Trainer
 			
 			// calculating MSE for the training data
 			validationMSE = Evaluator.calculateMSE(validationOutputs, validationTargets);
-			
-			System.out.println("MSE (T): " + trainingMSE);
-			System.out.println(validationMSE);
+			criterion.tryUpdateMSE(iteration, validationMSE, this.neural_net);
 		}
+		return criterion.getBestNetwork();
 	}
-	
 }

@@ -3,7 +3,7 @@ package model;
 import util.MathHelper;
 
 // represents the neuron of the neural network
-public class Neuron
+public class Neuron implements Cloneable
 {
 	// members
 	private double input;
@@ -17,6 +17,17 @@ public class Neuron
 	{
 		this.setId(id);
 		this.setBias(isBias);
+	}
+	
+	// clones this object
+	public Object clone()
+	{
+		Neuron neuron = new Neuron(this.id, this.isBias);
+		neuron.setError(this.error);
+		neuron.setInput(this.input);
+		neuron.setOutput(this.output);
+		
+		return neuron;
 	}
 	
 	public double calculateOutput(double input)
