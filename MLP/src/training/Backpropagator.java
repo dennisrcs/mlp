@@ -23,35 +23,43 @@ public class Backpropagator
 		Configuration config = network.getConfiguration();
 		Map<Integer, Integer> nodesPerLayer = config.getNodesPerLayer();
 		
-		int layerSize = config.getLayersNumber();
+		int layersNum = config.getLayersNumber();
 		
-		backpropagateError(neurons, weights, nodesPerLayer, layerSize);
+		backpropagateError(neurons, weights, nodesPerLayer, layersNum);
 	}
 
 	// back propagates the error from the output units to the hidden units
 	private static void backpropagateError(List<List<Neuron>> neurons, List<List<List<Weight>>> weights,
-			Map<Integer, Integer> nodesPerLayer, int layerSize) 
+			Map<Integer, Integer> nodesPerLayer, int layersNum) 
 	{
-		for (int i = layerSize - 1; i > 0; i--)
+		for (int i = layersNum - 1; i > 0; i--)
 		{
-			List<Neuron> layer = neurons.get(i);
+			List<Neuron> layer = neurons.get(i-1);
 			for (int j = 0; j < layer.size(); j++)
 			{
 				// getting neuron and its output
-				Neuron neuron = neurons.get(i).get(j);
+				Neuron neuron = layer.get(j);
 				double output = neuron.getOutput();
 				double delta_h = 0;
 				
 				// retrieves the number of neurons in the following layer
-				int neuronsNextLayer = nodesPerLayer.get(i+1);
+				int neuronsNextLayer = nodesPerLayer.get(i);
 				
-				// computes delta h
+				// if not last layer, adds 1 for taking bias into consideration
+				neuronsNextLayer = (i == layersNum - 1) ? neuronsNextLayer : neuronsNextLayer+1;
+				
+				// computes delta h.
 				for (int k = 0; k < neuronsNextLayer; k++)
 				{
-					if (!neurons.get(i).get(k).isBias())
+					Neuron nextLayerNeuron = neurons.get(i).get(k);
+					if (!nextLayerNeuron.isBias())
 					{
-						double weight = weights.get(i).get(j).get(k).getValue();
-						delta_h += neurons.get(i).get(k).getError() * weight;	
+						// this line is needed because for the layers that are not output layers
+						// we only have weights connecting neurons to non-bias neurons
+						int weightNextLayerIndex = (i == layersNum - 1) ? k : k-1; 
+						
+						double weight = weights.get(i-1).get(j).get(weightNextLayerIndex).getValue();
+						delta_h += nextLayerNeuron.getError() * weight;	
 					}
 				}
 				
@@ -85,7 +93,7 @@ public class Backpropagator
 					neuronOutput = neurons.get(layer).get(j).getOutput();
 					
 					// getting error in the neuron of the following layer
-					nextLayerNeuron = (layer - 1 != weights.size()) ? k : (k+1); 
+					nextLayerNeuron = (layer == weights.size() - 1) ? k : (k+1); 
 					neuronError = neurons.get(layer+1).get(nextLayerNeuron).getError();
 					
 					// calculating delta weight and updating weight

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.DataUtil;
-import util.MathFunctions;
+import util.MathHelper;
 
 public class NormalizationHandler
 {
@@ -37,8 +37,8 @@ public class NormalizationHandler
 		}
 		
 		// finds the minimum and maximum value in the collection
-		min = MathFunctions.findMin(numericData);
-		max = MathFunctions.findMax(numericData);
+		min = MathHelper.findMin(numericData);
+		max = MathHelper.findMax(numericData);
 		
 		// normalize the data
 		for (int i = 1; i < data.size(); i++)

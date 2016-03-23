@@ -8,14 +8,19 @@ public class Configuration
 	// members
 	private int layersNumber;
 	private int inputNumber;
+	private int outputNumber;
 	private Map<Integer, Integer> nodesPerLayer;
 	
 	// constructor
-	public Configuration(int input, Map<Integer, Integer> nodesPerLayer)
+	public Configuration(int inputSize, int outputSize, Map<Integer, Integer> nodesPerLayer)
 	{
-		this.inputNumber = input;
+		this.inputNumber = inputSize;
 		this.nodesPerLayer = nodesPerLayer;
-		this.nodesPerLayer.put(0, input);
+		this.nodesPerLayer.put(0, inputSize);
+		
+		int mapSize = this.nodesPerLayer.size();
+		this.nodesPerLayer.put(mapSize, outputSize);
+		
 		this.layersNumber = this.nodesPerLayer.size();
 	}
 	
@@ -37,5 +42,13 @@ public class Configuration
 	}
 	public void setInputNumber(int input_number) {
 		this.inputNumber = input_number;
+	}
+
+	public int getOutputNumber() {
+		return outputNumber;
+	}
+
+	public void setOutputNumber(int outputNumber) {
+		this.outputNumber = outputNumber;
 	}
 }

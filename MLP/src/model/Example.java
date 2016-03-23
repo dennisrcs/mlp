@@ -16,6 +16,22 @@ public class Example
 		this.target = target;
 	}
 	
+	// returns the size of the input
+	public int getInputSize()
+	{
+		if (input != null)
+			return input.size();
+		return -1;
+	}
+	
+	// returns the size of the output
+	public int getOutputSize()
+	{
+		if (target != null)
+			return target.size();
+		return -1;
+	}
+	
 	// getters and setters
 	public List<Double> getInput() {
 		return input;

@@ -60,7 +60,7 @@ public class FeedForwarder
 				}
 				
 				// necessary because the last layer has no bias
-				nextLayerNeuronId = ((i-2) == numLayers) ? j : (j+1);
+				nextLayerNeuronId = (i == numLayers - 2) ? j : (j+1);
 				neurons.get(i+1).get(nextLayerNeuronId).calculateOutput(inputSum);
 			}
 		}

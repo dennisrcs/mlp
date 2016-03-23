@@ -40,11 +40,16 @@ public class Network
 			ArrayList<Neuron> layer = new ArrayList<Neuron>();
 			
 			// every layer but the last has bias
-			numNeurons = (i - 1 == layerNum) ? numNeurons : (numNeurons+1);
+			numNeurons = (i == layerNum - 1) ? numNeurons : (numNeurons+1);
 			
 			for (int j = 0; j < numNeurons; j++)
 			{
-				Neuron neuron = new Neuron(neuronId++, j == 0);
+				Neuron neuron;
+				if (i == layerNum - 1)
+					neuron = new Neuron(neuronId++, false);
+				else
+					neuron = new Neuron(neuronId++, j == 0);
+					
 				layer.add(neuron);
 			}
 			

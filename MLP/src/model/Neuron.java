@@ -1,6 +1,6 @@
 package model;
 
-import util.MathFunctions;
+import util.MathHelper;
 
 // represents the neuron of the neural network
 public class Neuron
@@ -22,7 +22,7 @@ public class Neuron
 	public double calculateOutput(double input)
 	{
 		this.input = input;
-		this.output = MathFunctions.sigmoidFunction(this.input);
+		this.output = MathHelper.sigmoidFunction(this.input);
 		return this.output;
 	}
 	

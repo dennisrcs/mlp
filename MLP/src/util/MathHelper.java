@@ -3,7 +3,7 @@ package util;
 import java.util.List;
 
 // math utilities
-public class MathFunctions
+public class MathHelper
 {
 	// constant sigmoid function alpha
 	private static final double ALPHA = 1.0;
