@@ -19,11 +19,11 @@ public class DataParser
 	}
 	
 	// parses data
-	public ArrayList<ArrayList<String>> parse(String filename)
+	public List<List<String>> parse(String filename)
 	{
-		ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+		List<List<String>> result = new ArrayList<List<String>>();
 		
-		ArrayList<String> lines = DataReader.readData(filename);
+		List<String> lines = DataReader.readData(filename);
 		
 		// shuffling input data
 		Util.Shuffle(lines);

@@ -1,10 +1,6 @@
 package main;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import model.Configuration;
-import model.Network;
+import experimentation.Experimenter;
 
 public class Main
 {
@@ -18,5 +14,8 @@ public class Main
 		//Configuration config = new Configuration(3, nodesPerLayer);
 		//Network neuralNet = new Network(config);
 		//neuralNet.printWeights();
+		
+		Experimenter exp = new Experimenter();
+		exp.execute("wine.data", "?");
 	}
 }

@@ -1,6 +1,5 @@
 package training;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import model.Configuration;
@@ -9,6 +8,7 @@ import model.Network;
 
 public class Trainer
 {
+	// member
 	private Network neural_net;
 
 	// constructor
@@ -35,7 +35,7 @@ public class Trainer
 				Backpropagator.calculateErrorInHiddenUnits(this.neural_net);
 				
 				Backpropagator.updateWeights(this.neural_net);
-			}	
+			}
 		}
 	}
 	
