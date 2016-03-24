@@ -12,7 +12,7 @@ import model.Weight;
 public class Backpropagator
 {
 	// learning rate
-	private static final double LR = 0.05;
+	private static final double LR = 0.001;
 	
 	// calculate error in hidden units wrapper
 	public static void calculateErrorInHiddenUnits(Network network)

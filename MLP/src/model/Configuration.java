@@ -1,5 +1,6 @@
 package model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 // neural network configuration
@@ -15,12 +16,14 @@ public class Configuration
 	public Configuration(int inputSize, int outputSize, Map<Integer, Integer> nodesPerLayer)
 	{
 		this.inputNumber = inputSize;
-		this.nodesPerLayer = nodesPerLayer;
+		this.nodesPerLayer = new HashMap<Integer, Integer>();
 		this.nodesPerLayer.put(0, inputSize);
+		
+		for (Map.Entry<Integer, Integer> entry : nodesPerLayer.entrySet())
+			this.nodesPerLayer.put(entry.getKey(), entry.getValue());
 		
 		int mapSize = this.nodesPerLayer.size();
 		this.nodesPerLayer.put(mapSize, outputSize);
-		
 		this.layersNumber = this.nodesPerLayer.size();
 	}
 	

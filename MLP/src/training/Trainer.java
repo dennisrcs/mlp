@@ -30,8 +30,8 @@ public class Trainer
 		List<List<Double>> validationOutputs;
 		List<List<Double>> validationTargets;
 		double validationMSE;
-		int iteration = 0;
 		
+		int iteration;
 		for (iteration = 0; !criterion.isDone(iteration); iteration++)
 		{
 			validationOutputs = new ArrayList<List<Double>>();

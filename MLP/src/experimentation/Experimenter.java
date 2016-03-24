@@ -34,7 +34,7 @@ public class Experimenter
 			double accuracy = executor.evaluate(network, data.getTestingData());
 			accuracies.add(accuracy);
 			
-			System.out.println("acc: " + accuracy);
+			System.out.println(accuracy);
 		}
 		
 		StatisticsCalculator calc = new StatisticsCalculator();

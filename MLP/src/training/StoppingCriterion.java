@@ -7,6 +7,7 @@ public class StoppingCriterion
 {
 	// constants
 	private final int MIN_ITERATIONS = 5000;
+	private final int MAX_ITERATIONS = 100000;
 	
 	// members
 	private Network bestNetwork;
@@ -19,12 +20,19 @@ public class StoppingCriterion
 		this.minimumMSE = Double.POSITIVE_INFINITY;
 	}
 
+	// checks if the training algorithm is done
 	public boolean isDone(int iteration)
 	{
 		// should iterate at least MIN_ITERATIONS times
 		if (iteration < MIN_ITERATIONS)
 			return false;
 		
+		// if equal or higher than MAX_ITERATIONS, then stop
+		if (iteration >= MAX_ITERATIONS)
+			return true;
+		
+		// checks if current iteration is at least 2 times
+		// the last iteration the MSE was updated
 		if (iteration < this.getLastIterationMSEUpdate() * 2)
 			return false;
 		
@@ -37,11 +45,12 @@ public class StoppingCriterion
 		if (validationMSE < this.minimumMSE)
 		{
 			this.minimumMSE = validationMSE;
-			this.setLastIterationMSEUpdate(iteration);
+			this.lastIterationMSEUpdate = iteration;
 			this.bestNetwork = (Network)network.clone();
 		}
 	}
 
+	// getters and setters
 	public int getLastIterationMSEUpdate() {
 		return lastIterationMSEUpdate;
 	}
