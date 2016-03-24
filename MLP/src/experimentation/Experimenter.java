@@ -18,7 +18,7 @@ public class Experimenter
 	public void execute(UserInputReader userInput)
 	{
 		List<Double> accuracies = new ArrayList<Double>();
-		
+		System.out.println("Running...");
 		for (int iteration = 0; iteration < K_FOLD; iteration++)
 		{
 			// wraps the neural network execution
@@ -34,10 +34,11 @@ public class Experimenter
 			double accuracy = executor.evaluate(network, data.getTestingData());
 			accuracies.add(accuracy);
 			
-			System.out.println(accuracy);
+			//System.out.println(accuracy);
 		}
 		
 		StatisticsCalculator calc = new StatisticsCalculator();
 		calc.performStatistics(accuracies);
 	}
 }
+
